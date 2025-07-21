@@ -524,7 +524,7 @@ def graphByTask(
 
 
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/avg.pdf", bbox_inches="tight")
+    plt.savefig(f"{output_dir}/agg.pdf", bbox_inches="tight")
     # plt.show()
     print("\nGenerating overlayed plots for all tasks...")
 
@@ -595,7 +595,7 @@ def graphByTask(
     # Adjust layout to make room for legend
     plt.tight_layout()
     plt.subplots_adjust(right=0.8)
-    plt.savefig(f"{output_dir}/agg.pdf", bbox_inches="tight")
+    plt.savefig(f"{output_dir}/overlay.pdf", bbox_inches="tight")
     # plt.show()
 
 
