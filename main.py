@@ -1,260 +1,671 @@
 import torch
-from transformers import AutoTokenizer
-from unsloth import FastLanguageModel # <<< UNLOTH CHANGE >>>
-from peft import LoraConfig, get_peft_model
-from datasets import Dataset
+from unsloth import FastLanguageModel
+import argparse
+from typing import NamedTuple
+from transformers import TextStreamer  # type: ignore
 import numpy as np
 import matplotlib.pyplot as plt
-from tqdm.auto import tqdm
-import re
-from functools import partial
-import random
+import os
 
-# --- PART 1: DATA GENERATION (No changes needed) ---
+task_suite = [
+    # Difficulty 1
+    {
+        "name": "Country to Capital (1)",
+        "instruction": "What is the capital of the following country: France -> ?",
+        "examples": [
+            "Japan -> Tokyo",
+            "Germany -> Berlin",
+            "Canada -> Ottawa",
+        ],
+    },
+    {
+        "name": "Simple Addition (1)",
+        "instruction": "Calculate the sum of these two numbers: 3 + 6 -> ?",
+        "examples": [
+            "5 + 8 -> 13",
+            "10 + 4 -> 14",
+            "7 + 2 -> 9",
+        ],
+    },
+    {
+        "name": "Base 10 Arithmetic - Addition (1)",
+        "instruction": "Add the two numbers in base 10: 14 + 7 -> ?",
+        "examples": [
+            "5 + 9 -> 14",
+            "12 + 8 -> 20",
+            "3 + 11 -> 14",
+        ],
+    },
+    {
+        "name": "Base 10 Arithmetic - Subtraction (1)",
+        "instruction": "Subtract the second number from the first in base 10: 14 - 7 -> ?",
+        "examples": [
+            "9 - 5 -> 4",
+            "12 - 4 -> 8",
+            "10 - 6 -> 4",
+        ],
+    },
+    # Difficulty 2
+    {
+        "name": "English to French Translation (2)",
+        "instruction": "Translate the following from English to French: are you my friend -> ?",
+        "examples": [
+            "the cat is black -> le chat est noir",
+            "the dog is white -> le chien est blanc",
+            "I love science -> j'aime la science",
+        ],
+    },
+    {
+        "name": "Base 10 Arithmetic - Multiplication (2)",
+        "instruction": "Multiply the two numbers in base 10: 3 x 7 -> ?",
+        "examples": [
+            "5 x 2 -> 10",
+            "6 x 3 -> 18",
+            "4 x 4 -> 16",
+        ],
+    },
+    {
+        "name": "Synonym Matching (2)",
+        "instruction": "Find a synonym for the given word: happy -> ?",
+        "examples": [
+            "fast -> quick",
+            "sad -> unhappy",
+            "angry -> mad",
+        ],
+    },
+    # Difficulty 3
+    {
+        "name": "Unscramble Words (3)",
+        "instruction": "Unscramble the following letters to form a word: clinep -> ?",
+        "examples": [
+            "uptcmore -> computer",
+            "nbaaan -> banana",
+            "ephsatrome -> atmosphere",
+        ],
+    },
+    {
+        "name": "Base 10 Arithmetic - Modulo (3)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 10: 14 % 5 -> ?",
+        "examples": [
+            "10 % 3 -> 1",
+            "9 % 2 -> 1",
+            "8 % 4 -> 0",
+        ],
+    },
+    # Difficulty 4
+    {
+        "name": "Base 9 Arithmetic - Addition (4)",
+        "instruction": "Add the two numbers in base 9 and return the result in base 9: 7 + 5 -> ?",
+        "examples": [
+            "3 + 4 -> 7",
+            "5 + 2 -> 7",
+            "6 + 3 -> 10",
+        ],
+    },
+    {
+        "name": "Base 9 Arithmetic - Subtraction (4)",
+        "instruction": "Subtract the second number from the first in base 9 and return the result in base 9: 8 - 5 -> ?",
+        "examples": [
+            "6 - 2 -> 4",
+            "7 - 3 -> 4",
+            "5 - 5 -> 0",
+        ],
+    },
+    {
+        "name": "Base 8 Arithmetic - Addition (4)",
+        "instruction": "Add the two numbers in base 8 and return the result in base 8: 6 + 3 -> ?",
+        "examples": [
+            "5 + 2 -> 7",
+            "7 + 1 -> 10",
+            "4 + 3 -> 7",
+        ],
+    },
+    {
+        "name": "Base 8 Arithmetic - Subtraction (4)",
+        "instruction": "Subtract the second number from the first in base 8 and return the result in base 8: 7 - 3 -> ?",
+        "examples": [
+            "6 - 2 -> 4",
+            "5 - 1 -> 4",
+            "7 - 7 -> 0",
+        ],
+    },
+    # Difficulty 5
+    {
+        "name": "minus -> plus (5)",
+        "instruction": "Find the solution based on the pattern: 10 - 4 -> ?",
+        "examples": [
+            "3 - 2 -> 5",
+            "8 - 5 -> 13",
+            "3 - 6 -> 9",
+        ],
+    },
+    {
+        "name": "Base 9 Arithmetic - Multiplication (5)",
+        "instruction": "Multiply the two numbers in base 9 and return the result in base 9: 3 x 4 -> ?",
+        "examples": [
+            "2 x 3 -> 6",
+            "4 x 2 -> 8",
+            "3 x 3 -> 11",
+        ],
+    },
+    {
+        "name": "Base 9 Arithmetic - Modulo (5)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 9 and return it in base 9: 8 % 3 -> ?",
+        "examples": [
+            "7 % 2 -> 1",
+            "6 % 4 -> 2",
+            "5 % 5 -> 0",
+        ],
+    },
+    {
+        "name": "Base 8 Arithmetic - Multiplication (5)",
+        "instruction": "Multiply the two numbers in base 8 and return the result in base 8: 3 x 3 -> ?",
+        "examples": [
+            "2 x 2 -> 4",
+            "4 x 2 -> 10",
+            "3 x 3 -> 11",
+        ],
+    },
+    {
+        "name": "Base 8 Arithmetic - Modulo (5)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 8 and return it in base 8: 7 % 3 -> ?",
+        "examples": [
+            "6 % 4 -> 2",
+            "5 % 2 -> 1",
+            "4 % 4 -> 0",
+        ],
+    },
+    # Difficulty 6
+    {
+        "name": "Pattern Induction (6)",
+        "instruction": "Find the next number in the sequence: 2, 4, 8, 16, ? ->",
+        "examples": [
+            "1, 3, 5, 7 -> 9",
+            "3, 6, 12, 24 -> 48",
+        ],
+    },
+    {
+        "name": "Prime Factor Decomposition (6)",
+        "instruction": "List the prime factors of 84 -> ?",
+        "examples": [
+            "4 -> 2, 2",
+            "12 -> 2, 2, 3",
+            "35 -> 7, 5",
+        ],
+    },
+    # Difficulty 7
+    {
+        "name": "Symbol Substitution Puzzle (7)",
+        "instruction": "If ♦ = 2, ♣ = 3, and ♥ = 4, what is the value of ♦ + ♣ x ♥ -> ?",
+        "examples": [
+            "If ♦ = 2, ♣ = 3, ♥ = 7, ♦ - ♣ x ♥ -> -7",
+            "If ♠ = 10, ♣ = 5, ♥ = 2, ♠ / ♣ x ♥ -> 4",
+        ],
+    },
+    # Difficulty 8
+    {
+        "name": "Logic Deduction (8)",
+        "instruction": "If all bloops are razzles and some razzles are jinks, can we conclude that some bloops are jinks?",
+        "examples": [
+            "All apples are fruits. Some fruits are yellow. -> Cannot conclude some apples are yellow.",
+            "All mammals are animals. Some animals are fast. -> Cannot conclude some mammals are fast.",
+        ],
+    },
+    {
+        "name": "Anagram Logic Puzzle (8)",
+        "instruction": "Find the correct word that is an anagram of 'rescue' and also a synonym for 'secure' -> ?",
+        "examples": [
+            "listen -> silent",
+            "rescue -> secure",
+        ],
+    },
+    # Difficulty 9
+    {
+        "name": "Word Math (9)",
+        "instruction": "Replace each letter with a unique digit so the equation holds: SEND + MORE = MONEY -> ?",
+        "examples": [
+            "SEND + MORE = MONEY -> 9567 + 1085 = 10652",
+        ],
+    },
+    # Difficulty 10
+    {
+        "name": "Tower of Hanoi (10)",
+        "instruction": "How many moves are required to solve a 5-disk Tower of Hanoi puzzle? -> ?",
+        "examples": [
+            "1 disk -> 1",
+            "2 disks -> 3",
+            "3 disks -> 7",
+            "4 disks -> 15",
+        ],
+    },
+]
 
-def to_base(n, base):
-    if n == 0: return "0"
-    digits = [];
-    while n: digits.append(str(n % base)); n //= base
-    return "".join(digits[::-1])
 
-def generate_arithmetic_data(base, num_digits, num_samples):
-    data = []
-    max_val = base**num_digits
-    for _ in range(num_samples):
-        n1, n2 = random.randint(0, max_val - 1), random.randint(0, max_val - 1)
-        s = n1 + n2
-        n1_base, n2_base, s_base = to_base(n1, base), to_base(n2, base), to_base(s, base)
-        problem = f"{n1_base}+{n2_base}"
-        cot_steps = [f"Step 1: The problem is {problem}.", f"Step 2: The answer is {s_base}."] # Simplified CoT for example
-        cot_trace = "\n".join(cot_steps)
-        data.append({"problem": problem, "answer": s_base, "cot": cot_trace})
-    return data
+def attachHooks(model, num_layers, all_layer_outputs):
+    # --- Step 2: Prepare for Multi-Hook Capture ---
+    def get_layer_output_hook(layer_idx):
+        def hook(module, input, output):
+            # print(f"--- layer: {layer_idx} ---")
+            # print(f"tuple length: {len(output)}")
+            # for i, o in enumerate(output):
+            #     print(f"{i}th output: {o}")
+            # print("\n\n")
 
-# --- PART 2: GEOMETRIC ANALYSIS MODULE (No changes needed, it's compatible) ---
+            # many language models output a tuple that gives additional information ([hidden states, attention weights, kv cache]). We only want the first element
+            all_layer_outputs[layer_idx] = output[0].detach()
+            # nothing is overwritten, hook only runs once
 
-class GeometricAnalyzer:
-    def __init__(self, model, tokenizer):
-        self.model, self.tokenizer = model, tokenizer
-        self.outputs, self.hook_handles = {}, []
-
-    def _get_hook(self, layer_idx):
-        def hook(module, input, output): self.outputs[layer_idx] = output[0].detach().cpu()
         return hook
 
-    def analyze(self, instruction, examples, layers_to_probe):
-        self.outputs.clear()
-        prompt_parts, separator = [instruction] + examples, "\n\n"
-        full_prompt_text = separator.join(prompt_parts)
-        inputs = self.tokenizer(full_prompt_text, return_tensors="pt").to(self.model.device)
-        end_indices, current_offset = [], 0
-        for part in prompt_parts:
-            part_tokens = self.tokenizer(part, add_special_tokens=False)['input_ids']
-            end_indices.append(current_offset + len(part_tokens) - 1)
-            separator_tokens = self.tokenizer(separator, add_special_tokens=False)['input_ids']
-            current_offset += len(part_tokens) + len(separator_tokens)
-        
-        for i in layers_to_probe:
-            handle = self.model.model.layers[i].register_forward_hook(self._get_hook(i))
-            self.hook_handles.append(handle)
-        
-        with torch.no_grad(): self.model(**inputs)
-        
-        for handle in self.hook_handles: handle.remove()
-        self.hook_handles.clear()
+    # Attach a hook to every decoder layer
+    hook_handles = []
+    for i in range(num_layers):
+        target_layer = model.model.layers[i]
+        handle = target_layer.register_forward_hook(get_layer_output_hook(i))
+        hook_handles.append(handle)
+    print(f"Attached {len(hook_handles)} hooks to layers 0 through {num_layers - 1}.")
 
-        results = {}
-        for i in layers_to_probe:
-            hidden_states = self.outputs[i]
-            task_vec = hidden_states[0, end_indices[0], :]
-            example_vecs = hidden_states[0, end_indices[1:], :]
-            if len(example_vecs) > 1:
-                rho_d = 1 / (torch.mean(torch.pdist(example_vecs)) + 1e-6)
-            else: rho_d = 0.0
-            centroid = torch.mean(example_vecs, dim=0)
-            d_r = 1 - torch.nn.functional.cosine_similarity(task_vec, centroid, dim=0)
-            results[i] = {"rho_d": rho_d.item(), "d_r": d_r.item()}
-        return results
 
-# --- PART 3: EVALUATION MODULE (No changes needed, it's compatible) ---
+class Task(NamedTuple):
+    name: str
+    input_header: str
+    task: str
+    br: str
+    examples: str
+    input_footer: str
 
-def parse_model_output(output_text):
-    match = re.search(r'(\d+)\s*$', output_text.strip())
-    return match.group(1) if match else ""
 
-def evaluate_accuracy(model, tokenizer, test_set, anchor_prompt=""):
-    correct, total = 0, len(test_set)
-    for item in tqdm(test_set, desc="Evaluating Accuracy", leave=False):
-        prompt = anchor_prompt + f"Problem: {item['problem']}\nAnswer: "
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-        with torch.no_grad():
-            outputs = model.generate(**inputs, max_new_tokens=20, pad_token_id=tokenizer.eos_token_id, use_cache=True)
-        response = tokenizer.decode(outputs[0], skip_special_tokens=True)[len(prompt):]
-        if parse_model_output(response) == item['answer']: correct += 1
-    return correct / total if total > 0 else 0
-
-# --- PART 4: MAIN EXPERIMENT ORCHESTRATION (with Unsloth changes) ---
-
-import torch
-from transformers import AutoTokenizer
-from unsloth import FastLanguageModel
-from peft import LoraConfig
-from datasets import Dataset
-import numpy as np
-import matplotlib.pyplot as plt
-from tqdm.auto import tqdm
-import re
-from functools import partial
-import random
-import gc
-
-# --- (PART 1, 2, 3: DATA GENERATION, GEOMETRIC ANALYZER, EVALUATION are unchanged) ---
-# ... (Keep the functions to_base, generate_arithmetic_data, GeometricAnalyzer, 
-#      parse_model_output, and evaluate_accuracy exactly as they were) ...
-
-# --- PART 4: MAIN EXPERIMENT ORCHESTRATION (HEAVILY MODIFIED FOR ROBUSTNESS) ---
-
-def main():
-    # --- EXPERIMENT CONFIGURATION ---
-    NUM_RUNS = 5  # <<< Number of times to repeat the experiment
-    ICL_K_VALUES = [0, 1, 2, 4, 8, 16] # k-shots for ICL evaluation
-    GEOMETRIC_ANALYSIS_K = 8 # Number of examples for geometric analysis
-    ICL_EVAL_SUBSET_SIZE = 30 # Use a subset of test data for faster ICL eval
+# formats to llama-3.1 template
+def formatTasks(model_name: str, suite: list[dict[str, str | list[str]]]) -> list[Task]:
+    tasks = []
     
+    match model_name:
+        case "unsloth/Qwen3-14B":
+            for t in suite:
+                tasks.append(
+                    Task(
+                        name=str(t["name"]),
+                        input_header="<|im_start|>user\n",
+                        task=str(t["instruction"]),
+                        br = "\nExamples:\n",
+                        examples="\n".join(t["examples"]),
+                        input_footer = "<|im_end|>\n<im_start>assistant\n<think>\n\n</think>\n\n"   # disable cot
+                    ),
+                )
+        case "unsloth/gemma-3n-E4B-it":
+            for t in suite:
+                tasks.append(
+                    Task(
+                        name=str(t["name"]),
+                        input_header="<start_of_turn>user\n",
+                        task=str(t["instruction"]),
+                        br = "\nExamples:\n",
+                        examples="\n".join(t["examples"]),
+                        input_footer = "<end_of_turn>\n<start_of_turn>model\n"
+                    ),
+                )
+        case "unsloth/Phi-4":
+            for t in suite:
+                tasks.append(
+                    Task(
+                        name=str(t["name"]),
+                        input_header="<|im_start|>user<|im_sep|>\n\n",
+                        task=str(t["instruction"]),
+                        br = "\nExamples:\n",
+                        examples="\n".join(t["examples"]),
+                        input_footer = "\n\n<|im_end|><|im_start|>assistant<|im_sep|>\n\n"
+                    ),
+                )
+        case "meta-llama/Meta-Llama-3.1-8B-Instruct":
+            for t in suite:
+                tasks.append(
+                    Task(
+                        name=str(t["name"]),
+                        input_header="<|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023\nToday Date: 26 July 2024\n\nToday Date: 26 July 2024\n\n<|eot_id|><|start_header_id|>human<|end_header_id|>\n\n",
+                        task=str(t["instruction"]),
+                        br = "<|eot_id|>\n\nExamples:\n",
+                        examples="\n".join(t["examples"]),
+                        input_footer = "\n\n<|start_header_id|>assistant<|end_header_id|>\n\n"
+                    ),
+                )
+
+    return tasks
+
+
+class Range(NamedTuple):
+    lower: int
+    upper: int
+
+
+class Input(NamedTuple):
+    task_indices: Range
+    examples_indices: Range
+    tokenized: list[int]
+
+
+def processTaskInput(task: Task, tokenizer) -> Input:
+    lengths = []
+    recon_tokens = []  # reconstructed tokens list
+    for i, x in enumerate(task[1:]):
+        section_tokens = tokenizer.encode(x)[
+            0 if i == 0 else 1 :
+        ]  # remove each begin_of_text token except first one
+        recon_tokens.extend(section_tokens)
+        lengths.append(len(section_tokens))
+
+    indices = []
+    lower = 0
+    for length in lengths:
+        indices.append(Range(lower, length + lower))
+        lower += length
+    print(indices)
+    # input_arr = [input_header, task, "<|eot_id|>", examples, input_footer]
+    return Input(
+        task_indices=indices[1],
+        examples_indices=indices[3],
+        tokenized=recon_tokens,
+    )
+
+
+def pairwise_cosine_distance(vectors):
+    """
+    Calculates the mean pairwise cosine distance for a set of vectors.
+    Args:
+        vectors: A tensor of shape [N, D] where N is the number of vectors
+                 and D is the embedding dimension.
+    Returns:
+        A single scalar value for the mean pairwise cosine distance.
+    """
+    if vectors.shape[0] < 2:
+        return torch.tensor(0.0, device=vectors.device)
+
+    # Normalize each vector to unit length
+    normalized_vectors = torch.nn.functional.normalize(vectors, p=2, dim=1, eps=1e-12)
+
+    # Compute the cosine similarity matrix by matrix-multiplying the normalized vectors
+    # Resulting shape: [N, N]
+    similarity_matrix = torch.matmul(normalized_vectors, normalized_vectors.T)
+
+    # Cosine distance is 1 - similarity
+    distance_matrix = 1 - similarity_matrix
+
+    # We only want the unique pairwise distances, which are in the upper
+    # triangle of the matrix (excluding the diagonal).
+    # Get the indices of the upper triangle
+    upper_triangle_indices = torch.triu_indices(
+        distance_matrix.shape[0], distance_matrix.shape[1], offset=1
+    )
+
+    # Extract the values and calculate the mean
+    pairwise_distances = distance_matrix[
+        upper_triangle_indices[0], upper_triangle_indices[1]
+    ]
+
+    return torch.mean(pairwise_distances)
+
+
+class HiddenStatesByLayer(NamedTuple):
+    rho_d: list[float]
+    d_r: list[float]
+    task_vecs: list[torch.Tensor]
+    example_vecs: list[torch.Tensor]
+
+
+def calcHiddenStates(
+    hidden_states_by_task: dict[str, HiddenStatesByLayer],
+    processedTasks: list[tuple[Task, Input]],
+    num_layers: int,
+    all_layer_outputs: list[torch.Tensor],
+):
+    for task, input in processedTasks:
+        rho_d_by_layer: list[float] = []
+        d_r_by_layer: list[float] = []
+        task_vecs_by_layer: list[torch.Tensor] = []
+        example_vecs_by_layer: list[torch.Tensor] = []
+
+        for i in range(num_layers):
+            layer_hidden_states = all_layer_outputs[i]
+
+            lower, upper = input.task_indices
+            task_vecs = layer_hidden_states[0, lower:upper, :]
+            lower, upper = input.examples_indices
+            example_vecs = layer_hidden_states[0, lower:upper, :]
+            # print(task_vecs.shape)
+            # print(example_vecs.shape)
+            task_vecs_by_layer.append(task_vecs)
+            example_vecs_by_layer.append(example_vecs)
+
+            # Calculate Pattern Density (rho_d)
+            if len(example_vecs) > 1:
+                # example_vecs = example_vecs.to(torch.float32)
+                mean_cos_dist = pairwise_cosine_distance(example_vecs)
+                rho_d = 1 / (mean_cos_dist + 1e-6)
+            else:
+                print(
+                    "WARNING: example token size 1. If this is what you want, ignore this message."
+                )
+                rho_d = torch.tensor(0)
+            rho_d_by_layer.append(rho_d.item())
+
+            # Calculate Representational Mismatch (d_r)
+            pattern_centroid = torch.mean(example_vecs, dim=0)
+            # print(pattern_centroid.shape)
+            # print()
+            task_centroid = torch.mean(task_vecs, dim=0)
+            d_r = 1 - torch.nn.functional.cosine_similarity(
+                task_centroid, pattern_centroid, dim=0
+            )
+            d_r_by_layer.append(d_r.item())
+
+        hidden_states_by_task[task.name] = HiddenStatesByLayer(
+            rho_d_by_layer, d_r_by_layer, task_vecs_by_layer, example_vecs_by_layer
+        )
+
+
+def graphByTask(
+    tasks: list[Task],
+    hidden_states_by_task: dict[str, HiddenStatesByLayer],
+    num_layers: int,
+    output_dir: str,
+    model_name: str,
+):
+    all_rho_d = np.array([res.rho_d for res in hidden_states_by_task.values()])
+    all_d_r = np.array([res.d_r for res in hidden_states_by_task.values()])
+
+    # Calculate mean and standard deviation across tasks for each layer
+    mean_rho_d = np.mean(all_rho_d, axis=0)
+    std_rho_d = np.std(all_rho_d, axis=0)
+
+    mean_d_r = np.mean(all_d_r, axis=0)
+    std_d_r = np.std(all_d_r, axis=0)
+
+    # # Create the plot
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 9), sharex=True)
+    layer_indices = list(range(num_layers))
+
+    # print(len(layer_indices))
+    # print(len(mean_rho_d))
+    # # Plot Aggregated Pattern Density
+    ax1.plot(layer_indices, mean_rho_d, marker="o", linestyle="-", label="Mean")
+    ax1.fill_between(
+        layer_indices,
+        mean_rho_d - std_rho_d,
+        mean_rho_d + std_rho_d,
+        alpha=0.2,
+        label="Std. Dev.",
+    )
+    ax1.set_title(
+        "Aggregated Pattern Density ($\\rho_d$) vs. Layer Index (Across All Tasks)"
+    )
+    ax1.set_ylabel("Pattern Density (1 / Mean Distance)")
+    ax1.legend()
+    ax1.grid(True)
+
+    # # Plot Aggregated Representational Mismatch
+    ax2.plot(
+        layer_indices, mean_d_r, marker="o", linestyle="-", color="r", label="Mean"
+    )
+    ax2.fill_between(
+        layer_indices,
+        mean_d_r - std_d_r,
+        mean_d_r + std_d_r,
+        color="r",
+        alpha=0.2,
+        label="Std. Dev.",
+    )
+    ax2.set_title(
+        "Aggregated Representational Mismatch ($d_r$) vs. Layer Index (Across All Tasks)"
+    )
+    ax2.set_ylabel("Mismatch (Cosine Distance)")
+    ax2.set_xlabel("Layer Index")
+    ax2.legend()
+    ax2.grid(True)
+    fig.suptitle(f"{model_name.split("/")[1]} Aggregated Hidden Density and Distance Trajectories", fontsize=16, fontweight='bold')
+
+
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/avg.pdf", bbox_inches="tight")
+    # plt.show()
+    print("\nGenerating overlayed plots for all tasks...")
+
+    # Create the plot figure
+    # Create the plot figure
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10), sharex=True)
+    layer_indices = list(range(num_layers))
+
+    # Use a colormap to get distinct colors for each task
+    colors = plt.cm.viridis(np.linspace(0, 1, len(tasks)))  # type: ignore
+
+    # Collect handles for legend
+    legend_handles = []
+
+    # Loop through each stored task result and plot it
+    for i, (task_name, results) in enumerate(hidden_states_by_task.items()):
+        # Get the data for this task
+        rho_d_values = results.rho_d
+        d_r_values = results.d_r
+
+        # Plot Pattern Density
+        (line1,) = ax1.plot(
+            layer_indices,
+            rho_d_values,
+            marker="o",
+            markersize=4,
+            linestyle="-",
+            alpha=0.7,
+            color=colors[i],
+            label=task_name,
+        )
+
+        # Plot Representational Mismatch
+        ax2.plot(
+            layer_indices,
+            d_r_values,
+            marker="o",
+            markersize=4,
+            linestyle="-",
+            alpha=0.7,
+            color=colors[i],
+        )
+
+        # Save one handle for the legend
+        legend_handles.append(line1)
+
+    # Configure Plot 1
+    ax1.set_title("Overlayed Pattern Density ($\\rho_d$) vs. Layer Index")
+    ax1.set_ylabel("Pattern Density (1 / Mean Distance)")
+    ax1.grid(True)
+
+    # Configure Plot 2
+    ax2.set_title("Overlayed Representational Mismatch ($d_r$) vs. Layer Index")
+    ax2.set_ylabel("Mismatch (Cosine Distance)")
+    ax2.set_xlabel("Layer Index")
+    ax2.grid(True)
+
+    # Shared legend outside the figure
+    fig.legend(
+        handles=legend_handles,
+        loc="center left",
+        bbox_to_anchor=(0.8, 0.5),
+        title="Task",
+        frameon=False,
+    )
+    fig.suptitle(f"{model_name.split("/")[1]} Overlayed Hidden Density and Distance Trajectories", fontsize=16, fontweight='bold')
+    
+    # Adjust layout to make room for legend
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.8)
+    plt.savefig(f"{output_dir}/agg.pdf", bbox_inches="tight")
+    # plt.show()
+
+
+def main(model_name: str, output_dir: str):
+    output_dir = f"{output_dir}/{model_name.replace("/", "_")}"
+    try:
+        os.mkdir(output_dir)
+        print(f"Directory '{output_dir}' created successfully.")
+    except FileExistsError:
+        print(f"Directory '{output_dir}' created successfully.")
+
     print("--- Setting up Model and Tokenizer with Unsloth ---")
-    model_id = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=model_id,
-        max_seq_length=2048,
+        model_name=model_name,
+        max_seq_length=2048,  # Recommended to set for Unsloth
         dtype=torch.bfloat16,
         load_in_4bit=True,
     )
 
-    # --- Data Generation ---
-    print("\n--- Generating Datasets ---")
-    bases = [8, 9, 10]
-    datasets = {}
-    for base in bases:
-        print(f"Generating data for Base {base}...")
-        datasets[base] = {
-            "train_2d": generate_arithmetic_data(base, 2, 1000),
-            "test_2d_id": generate_arithmetic_data(base, 2, 250),
-        }
+    _ = FastLanguageModel.for_inference(model)
 
-    # --- Data Structures to store results across all runs ---
-    all_runs_geometric_results = {base: [] for base in bases}
-    all_runs_icl_results = {base: {"standard": [], "cot": []} for base in bases}
-    
-    # --- MAIN EXPERIMENTAL LOOP ---
-    for run_idx in range(NUM_RUNS):
-        print(f"\n{'='*20} STARTING RUN {run_idx + 1}/{NUM_RUNS} {'='*20}")
-        gc.collect(); torch.cuda.empty_cache() # Clear memory between runs
-        
-        # --- Experiment 1: Geometric Analysis ---
-        print("\n--- Experiment 1: Geometric Analysis ---")
-        analyzer = GeometricAnalyzer(model, tokenizer)
-        num_layers = model.config.num_hidden_layers
-        layers_to_probe = list(range(num_layers))
+    num_layers = len(model.model.layers)
+    all_layer_outputs = [torch.tensor(0) for _ in range(num_layers)]
+    attachHooks(model, num_layers, all_layer_outputs)
 
-        for base in bases:
-            print(f"  Analyzing geometry for Base {base} (Run {run_idx + 1})...")
-            instruction = f"Perform addition in base {base}."
-            # <<< MODIFICATION: Randomly sample examples for this run >>>
-            sampled_examples = random.sample(datasets[base]['train_2d'], GEOMETRIC_ANALYSIS_K)
-            examples = [f"{item['problem']} -> {item['answer']}" for item in sampled_examples]
-            
-            run_geometry = analyzer.analyze(instruction, examples, layers_to_probe)
-            all_runs_geometric_results[base].append(run_geometry)
+    tasks = formatTasks(model_name, task_suite)
+    processedTasks: list[tuple[Task, Input]] = []
+    for task in tasks:
+        processedTasks.append((task, processTaskInput(task, tokenizer)))
 
-        # --- Experiment 2: In-Context Learning Performance ---
-        print("\n--- Experiment 2: In-Context Learning (ICL) ---")
-        for base in bases:
-            for use_cot in [False, True]:
-                cot_str = "CoT" if use_cot else "Standard"
-                print(f"  Running ICL for Base {base} ({cot_str}, Run {run_idx + 1})...")
-                run_accuracies = []
-                for k in ICL_K_VALUES:
-                    anchor_prompt = ""
-                    if k > 0:
-                        # <<< MODIFICATION: Randomly sample examples for this ICL evaluation >>>
-                        icl_examples = random.sample(datasets[base]['train_2d'], k)
-                        prompt_parts = []
-                        for item in icl_examples:
-                            if use_cot: prompt_parts.append(f"Problem: {item['problem']}\nAnswer:\n{item['cot']}")
-                            else: prompt_parts.append(f"Problem: {item['problem']}\nAnswer: {item['answer']}")
-                        anchor_prompt = "\n\n".join(prompt_parts) + "\n\n"
-                    
-                    test_subset = random.sample(datasets[base]['test_2d_id'], ICL_EVAL_SUBSET_SIZE)
-                    accuracy = evaluate_accuracy(model, tokenizer, test_subset, anchor_prompt)
-                    run_accuracies.append(accuracy)
-                
-                result_key = "cot" if use_cot else "standard"
-                all_runs_icl_results[base][result_key].append(run_accuracies)
+    task_outputs: dict[str, list[torch.Tensor]] = {}
+    text_streamer = TextStreamer(tokenizer)
 
-    # --- AGGREGATION AND PLOTTING ---
-    print(f"\n{'='*20} ALL {NUM_RUNS} RUNS COMPLETE. Aggregating and plotting results... {'='*20}")
+    print(f"{'=' * 10} GENERATING {'=' * 10}")
+    for task, input in processedTasks:
+        print(f"\n\n{'-' * 10} {task.name} {'-' * 10}\n")
+        _ = model.generate(
+            input_ids=torch.tensor([input.tokenized]).to("cuda"),
+            streamer=text_streamer,
+            max_new_tokens=256,
+            use_cache=True,
+        )
+        task_outputs[task.name] = all_layer_outputs.copy()
 
-    # --- Plot 1: Aggregated Geometric Analysis ---
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 9), sharex=True)
-    for base in bases:
-        # Aggregate geometric data
-        base_rho_d = np.array([[res[i]['rho_d'] for i in layers_to_probe] for res in all_runs_geometric_results[base]])
-        base_d_r = np.array([[res[i]['d_r'] for i in layers_to_probe] for res in all_runs_geometric_results[base]])
-        
-        mean_rho_d, std_rho_d = np.mean(base_rho_d, axis=0), np.std(base_rho_d, axis=0)
-        mean_d_r, std_d_r = np.mean(base_d_r, axis=0), np.std(base_d_r, axis=0)
+    hidden_states_by_task: dict[str, HiddenStatesByLayer] = {}
 
-        ax1.plot(layers_to_probe, mean_rho_d, marker='o', markersize=4, label=f'Base {base} Mean')
-        ax1.fill_between(layers_to_probe, mean_rho_d - std_rho_d, mean_rho_d + std_rho_d, alpha=0.2)
-        ax2.plot(layers_to_probe, mean_d_r, marker='o', markersize=4, label=f'Base {base} Mean')
-        ax2.fill_between(layers_to_probe, mean_d_r - std_d_r, mean_d_r + std_d_r, alpha=0.2)
-    
-    ax1.set_title(f'Aggregated Pattern Density ($\rho_d$) vs. Layer ({NUM_RUNS} Runs)')
-    ax1.set_ylabel('Density'); ax1.grid(True); ax1.legend()
-    ax2.set_title(f'Aggregated Representational Mismatch ($d_r$) vs. Layer ({NUM_RUNS} Runs)')
-    ax2.set_ylabel('Mismatch'); ax2.set_xlabel('Layer Index'); ax2.grid(True); ax2.legend()
-    plt.tight_layout(); plt.show()
+    calcHiddenStates(
+        hidden_states_by_task, processedTasks, num_layers, all_layer_outputs
+    )
+    graphByTask(tasks, hidden_states_by_task, num_layers, output_dir, model_name)
 
-    # --- Plot 2: Aggregated ICL Performance ---
-    plt.figure(figsize=(10, 6))
-    for base in bases:
-        # Aggregate Standard ICL
-        standard_acc = np.array(all_runs_icl_results[base]['standard'])
-        mean_standard, std_standard = np.mean(standard_acc, axis=0), np.std(standard_acc, axis=0)
-        p = plt.plot(ICL_K_VALUES, mean_standard, marker='o', linestyle='-', label=f'Base {base} (Standard)')
-        plt.fill_between(ICL_K_VALUES, mean_standard - std_standard, mean_standard + std_standard, alpha=0.2, color=p[0].get_color())
-        
-        # Aggregate CoT ICL
-        cot_acc = np.array(all_runs_icl_results[base]['cot'])
-        mean_cot, std_cot = np.mean(cot_acc, axis=0), np.std(cot_acc, axis=0)
-        p = plt.plot(ICL_K_VALUES, mean_cot, marker='s', linestyle='--', label=f'Base {base} (CoT)')
-        plt.fill_between(ICL_K_VALUES, mean_cot - std_cot, mean_cot + std_cot, alpha=0.2, color=p[0].get_color())
-
-    plt.title(f'Aggregated ICL Accuracy vs. Number of Shots ({NUM_RUNS} Runs)')
-    plt.xlabel('Number of Shots (k)'); plt.ylabel('Mean Accuracy'); 
-    if max(ICL_K_VALUES) > 2: plt.xscale('log', base=2); 
-    plt.xticks(ICL_K_VALUES, ICL_K_VALUES); plt.legend(); plt.grid(True); plt.show()
-
-    # --- Plot 3: Aggregated Final Analysis ---
-    print("\n--- Final Analysis: Linking Geometry to Performance ---")
-    sweet_spot_layer = 28 # Choose a layer based on plots (e.g., near the bottom of the d_r valley)
-    
-    plt.figure(figsize=(8, 6))
-    for base in bases:
-        # Get the mean geometric metric from the sweet spot across all runs
-        d_r_at_sweet_spot_all_runs = [run[sweet_spot_layer]['d_r'] for run in all_runs_geometric_results[base]]
-        mean_mismatch = np.mean(d_r_at_sweet_spot_all_runs)
-        
-        # Get the mean performance metric, e.g., accuracy at k=8
-        k_target_idx = ICL_K_VALUES.index(8)
-        k_target_acc_all_runs = np.array(all_runs_icl_results[base]['standard'])[:, k_target_idx]
-        mean_accuracy = np.mean(k_target_acc_all_runs)
-        
-        plt.scatter(mean_mismatch, mean_accuracy, s=200, label=f'Base {base}', alpha=0.8, zorder=3)
-
-    plt.title('Mean Performance vs. Mean Initial Geometric Mismatch')
-    plt.xlabel(f'Mean Mismatch $d_r$ @ Layer {sweet_spot_layer}'); plt.ylabel(f'Mean Standard ICL Accuracy @ k=8')
-    plt.grid(True); plt.legend(); plt.show()
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(prog="VisualizeHiddenStates")
+    parser.add_argument(
+        "--model_name", type=str, choices=["llama-3.1-8b-instruct", "phi-4", "gemma-3n", "qwen3"], default="llama-3.1-8b-instruct"
+    )
+    parser.add_argument("--output_dir", type=str, default="./output")
+
+    args = parser.parse_args()
+
+    match str(args.model_name).lower():
+        case "qwen3":
+            model_name = "unsloth/Qwen3-14B"
+        case "gemma-3n":
+            model_name = "unsloth/gemma-3n-E4B-it"
+        case "phi-4":
+            model_name = "unsloth/Phi-4"
+        case _:
+            model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+    
+    main(model_name, args.output_dir)
