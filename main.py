@@ -241,7 +241,9 @@ task_suite = [
 ]
 
 
-def attachHooks(model, num_layers, all_layer_outputs):
+def attachHooks(model, layers, all_layer_outputs):
+    num_layers = len(layers)
+    
     # --- Step 2: Prepare for Multi-Hook Capture ---
     def get_layer_output_hook(layer_idx):
         def hook(module, input, output):
@@ -260,7 +262,7 @@ def attachHooks(model, num_layers, all_layer_outputs):
     # Attach a hook to every decoder layer
     hook_handles = []
     for i in range(num_layers):
-        target_layer = model.model.layers[i]
+        target_layer = layers[i]
         handle = target_layer.register_forward_hook(get_layer_output_hook(i))
         hook_handles.append(handle)
     print(f"Attached {len(hook_handles)} hooks to layers 0 through {num_layers - 1}.")
@@ -616,11 +618,17 @@ def main(model_name: str, output_dir: str):
         load_in_4bit=True,
     )
 
-    _ = FastLanguageModel.for_inference(model)
+    if model_name != "unsloth/Qwen3-14B":
+        _ = FastLanguageModel.for_inference(model)
 
-    num_layers = len(model.model.layers)
+    layers = model.model.language_model.layers if model_name == "unsloth/gemma-3n-E4B-it" else model.model.layers
+    
+    if model_name == "unsloth/gemma-3n-E4B-it":
+        tokenizer.encode = lambda x : tokenizer(None, x)['input_ids'][0]
+    
+    num_layers = len(layers)
     all_layer_outputs = [torch.tensor(0) for _ in range(num_layers)]
-    attachHooks(model, num_layers, all_layer_outputs)
+    attachHooks(model, layers, all_layer_outputs)
 
     tasks = formatTasks(model_name, task_suite)
     processedTasks: list[tuple[Task, Input]] = []
@@ -646,8 +654,10 @@ def main(model_name: str, output_dir: str):
     calcHiddenStates(
         hidden_states_by_task, processedTasks, num_layers, all_layer_outputs
     )
+    
+    print(f"{'=' * 10} WRITING RESULTS {'=' * 10}")
     graphByTask(tasks, hidden_states_by_task, num_layers, output_dir, model_name)
-
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="VisualizeHiddenStates")
