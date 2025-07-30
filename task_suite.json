@@ -1,0 +1,241 @@
+[
+    {
+        "name": "Country to Capital (1)",
+        "instruction": "What is the capital of the following country: France -> ?",
+        "examples": [
+            "Japan -> Tokyo",
+            "Germany -> Berlin",
+            "Canada -> Ottawa"
+        ]
+    },
+    {
+        "name": "Simple Addition (1)",
+        "instruction": "Calculate the sum of these two numbers: 3 + 6 -> ?",
+        "examples": [
+            "5 + 8 -> 13",
+            "10 + 4 -> 14",
+            "7 + 2 -> 9"
+        ]
+    },
+    {
+        "name": "Base 10 Arithmetic - Addition (1)",
+        "instruction": "Add the two numbers in base 10: 14 + 7 -> ?",
+        "examples": [
+            "5 + 9 -> 14",
+            "12 + 8 -> 20",
+            "3 + 11 -> 14"
+        ]
+    },
+    {
+        "name": "Base 10 Arithmetic - Subtraction (1)",
+        "instruction": "Subtract the second number from the first in base 10: 14 - 7 -> ?",
+        "examples": [
+            "9 - 5 -> 4",
+            "12 - 4 -> 8",
+            "10 - 6 -> 4"
+        ]
+    },
+    {
+        "name": "English to French Translation (2)",
+        "instruction": "Translate the following from English to French: are you my friend -> ?",
+        "examples": [
+            "the cat is black -> le chat est noir",
+            "the dog is white -> le chien est blanc",
+            "I love science -> j'aime la science"
+        ]
+    },
+    {
+        "name": "Base 10 Arithmetic - Multiplication (2)",
+        "instruction": "Multiply the two numbers in base 10: 3 x 7 -> ?",
+        "examples": [
+            "5 x 2 -> 10",
+            "6 x 3 -> 18",
+            "4 x 4 -> 16"
+        ]
+    },
+    {
+        "name": "Synonym Matching (2)",
+        "instruction": "Find a synonym for the given word: happy -> ?",
+        "examples": [
+            "fast -> quick",
+            "sad -> unhappy",
+            "angry -> mad"
+        ]
+    },
+    {
+        "name": "Unscramble Words (3)",
+        "instruction": "Unscramble the following letters to form a word: clinep -> ?",
+        "examples": [
+            "uptcmore -> computer",
+            "nbaaan -> banana",
+            "ephsatrome -> atmosphere"
+        ]
+    },
+    {
+        "name": "Base 10 Arithmetic - Modulo (3)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 10: 14 % 5 -> ?",
+        "examples": [
+            "10 % 3 -> 1",
+            "9 % 2 -> 1",
+            "8 % 4 -> 0"
+        ]
+    },
+    {
+        "name": "Base 9 Arithmetic - Addition (4)",
+        "instruction": "Add the two numbers in base 9 and return the result in base 9: 7 + 5 -> ?",
+        "examples": [
+            "3 + 4 -> 7",
+            "5 + 2 -> 7",
+            "6 + 3 -> 10"
+        ]
+    },
+    {
+        "name": "Base 9 Arithmetic - Subtraction (4)",
+        "instruction": "Subtract the second number from the first in base 9 and return the result in base 9: 8 - 5 -> ?",
+        "examples": [
+            "6 - 2 -> 4",
+            "7 - 3 -> 4",
+            "5 - 5 -> 0"
+        ]
+    },
+    {
+        "name": "Base 8 Arithmetic - Addition (4)",
+        "instruction": "Add the two numbers in base 8 and return the result in base 8: 6 + 3 -> ?",
+        "examples": [
+            "5 + 2 -> 7",
+            "7 + 1 -> 10",
+            "4 + 3 -> 7"
+        ]
+    },
+    {
+        "name": "Base 8 Arithmetic - Subtraction (4)",
+        "instruction": "Subtract the second number from the first in base 8 and return the result in base 8: 7 - 3 -> ?",
+        "examples": [
+            "6 - 2 -> 4",
+            "5 - 1 -> 4",
+            "7 - 7 -> 0"
+        ]
+    },
+    {
+        "name": "minus -> plus (5)",
+        "instruction": "Find the solution based on the pattern: 10 - 4 -> ?",
+        "examples": [
+            "3 - 2 -> 5",
+            "8 - 5 -> 13",
+            "3 - 6 -> 9"
+        ]
+    },
+    {
+        "name": "Base 9 Arithmetic - Multiplication (5)",
+        "instruction": "Multiply the two numbers in base 9 and return the result in base 9: 3 x 4 -> ?",
+        "examples": [
+            "2 x 3 -> 6",
+            "4 x 2 -> 8",
+            "3 x 3 -> 11"
+        ]
+    },
+    {
+        "name": "Base 9 Arithmetic - Modulo (5)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 9 and return it in base 9: 8 % 3 -> ?",
+        "examples": [
+            "7 % 2 -> 1",
+            "6 % 4 -> 2",
+            "5 % 5 -> 0"
+        ]
+    },
+    {
+        "name": "Base 8 Arithmetic - Multiplication (5)",
+        "instruction": "Multiply the two numbers in base 8 and return the result in base 8: 3 x 3 -> ?",
+        "examples": [
+            "2 x 2 -> 4",
+            "4 x 2 -> 10",
+            "3 x 3 -> 11"
+        ]
+    },
+    {
+        "name": "Base 8 Arithmetic - Modulo (5)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 8 and return it in base 8: 7 % 3 -> ?",
+        "examples": [
+            "6 % 4 -> 2",
+            "5 % 2 -> 1",
+            "4 % 4 -> 0"
+        ]
+    },
+    {
+        "name": "Pattern Induction (6)",
+        "instruction": "Find the next number in the sequence: 2, 4, 8, 16, ? ->",
+        "examples": [
+            "1, 3, 5, 7 -> 9",
+            "3, 6, 12, 24 -> 48"
+        ]
+    },
+    {
+        "name": "Prime Factor Decomposition (6)",
+        "instruction": "List the prime factors of 84 -> ?",
+        "examples": [
+            "4 -> 2, 2",
+            "12 -> 2, 2, 3",
+            "35 -> 7, 5"
+        ]
+    },
+    {
+        "name": "Symbol Substitution Puzzle (7)",
+        "instruction": "If ♦ = 2, ♣ = 3, and ♥ = 4, what is the value of ♦ + ♣ x ♥ -> ?",
+        "examples": [
+            "If ♦ = 2, ♣ = 3, ♥ = 7, ♦ - ♣ x ♥ -> -7",
+            "If ♠ = 10, ♣ = 5, ♥ = 2, ♠ / ♣ x ♥ -> 4"
+        ]
+    },
+    {
+        "name": "Logic Deduction (8)",
+        "instruction": "If all bloops are razzles and some razzles are jinks, can we conclude that some bloops are jinks?",
+        "examples": [
+            "All apples are fruits. Some fruits are yellow. -> Cannot conclude some apples are yellow.",
+            "All mammals are animals. Some animals are fast. -> Cannot conclude some mammals are fast."
+        ]
+    },
+    {
+        "name": "Anagram Logic Puzzle (8)",
+        "instruction": "Find the correct word that is an anagram of 'rescue' and also a synonym for 'secure' -> ?",
+        "examples": [
+            "listen -> silent",
+            "rescue -> secure"
+        ]
+    },
+    {
+        "name": "Mini Cryptogram (8)",
+        "instruction": "Decode the short substitution cipher (A→D, B→E, etc).",
+        "examples": [
+            "KHOOR -> HELLO",
+            "ZRUOG -> WORLD",
+            "SBEER -> PYBBO",
+            "FDHVDU -> CAESAR",
+            "MDLLOL ->"
+        ]
+    },
+    {
+        "name": "Word Math (9)",
+        "instruction": "Replace each letter with a unique digit so the equation holds: SEND + MORE = MONEY -> ?",
+        "examples": [
+            "SEND + MORE = MONEY -> 9567 + 1085 = 10652"
+        ]
+    },
+    {
+        "name": "Advanced Logic Grid (9)",
+        "instruction": "Use the clues to determine the correct ordering or pairing.",
+        "examples": [
+            "Clues:\n- Alice finishes before Bob but after Carol.\n- Bob finishes immediately before Dave.\nOrder: -> Carol, Alice, Bob, Dave",
+            "Clues:\n- Tom stands immediately left of Jerry.\n- Spike stands somewhere to the right of Tom.\nArrange left to right: ->"
+        ]
+    },
+    {
+        "name": "Meta-Riddle Sequence (10)",
+        "instruction": "Each answer here hints at the next puzzle. Solve the sequence:",
+        "examples": [
+            "Puzzle 1: I'm tall when I'm young and short when I'm old. What am I? -> candle",
+            "Puzzle 2: (use CANDLE) Shift each letter by 2 in the alphabet: -> ecpgnf",
+            "Puzzle 3: (from 'ecpgnf') Rearrange to form an animal: -> fencap -> panfec? No—re-spell: 'capfen'? Actually 'fence p'? (example may vary)",
+            "Puzzle 4: (from your Puzzle 3 answer) What is hidden inside its name? ->"
+        ]
+    }
+]

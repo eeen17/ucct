@@ -6,6 +6,7 @@ from transformers import TextStreamer  # type: ignore
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from tqdm import tqdm
 
 task_suite = [
     # Difficulty 1
@@ -639,7 +640,7 @@ def main(model_name: str, output_dir: str):
     text_streamer = TextStreamer(tokenizer)
 
     print(f"{'=' * 10} GENERATING {'=' * 10}")
-    for task, input in processedTasks:
+    for task, input in tqdm(processedTasks):
         print(f"\n\n{'-' * 10} {task.name} {'-' * 10}\n")
         _ = model.generate(
             input_ids=torch.tensor([input.tokenized]).to("cuda"),
