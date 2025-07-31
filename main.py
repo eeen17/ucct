@@ -332,8 +332,7 @@ def main(model_name: str, output_dir: str):
         load_in_4bit=True,
     )
 
-    if model_name != "unsloth/Qwen3-14B":
-        _ = FastLanguageModel.for_inference(model)
+    _ = FastLanguageModel.for_inference(model)
 
     layers = model.model.layers
         
