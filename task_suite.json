@@ -35,6 +35,7 @@
             "10 - 6 -> 4"
         ]
     },
+
     {
         "name": "English to French Translation (2)",
         "instruction": "Translate the following from English to French: are you my friend -> ?",
@@ -62,6 +63,7 @@
             "angry -> mad"
         ]
     },
+
     {
         "name": "Unscramble Words (3)",
         "instruction": "Unscramble the following letters to form a word: clinep -> ?",
@@ -80,6 +82,7 @@
             "8 % 4 -> 0"
         ]
     },
+
     {
         "name": "Base 9 Arithmetic - Addition (4)",
         "instruction": "Add the two numbers in base 9 and return the result in base 9: 7 + 5 -> ?",
@@ -116,6 +119,7 @@
             "7 - 7 -> 0"
         ]
     },
+
     {
         "name": "minus -> plus (5)",
         "instruction": "Find the solution based on the pattern: 10 - 4 -> ?",
@@ -161,6 +165,7 @@
             "4 % 4 -> 0"
         ]
     },
+
     {
         "name": "Pattern Induction (6)",
         "instruction": "Find the next number in the sequence: 2, 4, 8, 16, ? ->",
@@ -178,6 +183,7 @@
             "35 -> 7, 5"
         ]
     },
+
     {
         "name": "Symbol Substitution Puzzle (7)",
         "instruction": "If ♦ = 2, ♣ = 3, and ♥ = 4, what is the value of ♦ + ♣ x ♥ -> ?",
@@ -186,6 +192,7 @@
             "If ♠ = 10, ♣ = 5, ♥ = 2, ♠ / ♣ x ♥ -> 4"
         ]
     },
+
     {
         "name": "Logic Deduction (8)",
         "instruction": "If all bloops are razzles and some razzles are jinks, can we conclude that some bloops are jinks?",
@@ -202,17 +209,7 @@
             "rescue -> secure"
         ]
     },
-    {
-        "name": "Mini Cryptogram (8)",
-        "instruction": "Decode the short substitution cipher (A→D, B→E, etc).",
-        "examples": [
-            "KHOOR -> HELLO",
-            "ZRUOG -> WORLD",
-            "SBEER -> PYBBO",
-            "FDHVDU -> CAESAR",
-            "MDLLOL ->"
-        ]
-    },
+
     {
         "name": "Word Math (9)",
         "instruction": "Replace each letter with a unique digit so the equation holds: SEND + MORE = MONEY -> ?",
@@ -220,22 +217,15 @@
             "SEND + MORE = MONEY -> 9567 + 1085 = 10652"
         ]
     },
+
     {
-        "name": "Advanced Logic Grid (9)",
-        "instruction": "Use the clues to determine the correct ordering or pairing.",
+        "name": "Tower of Hanoi (10)",
+        "instruction": "How many moves are required to solve a 5-disk Tower of Hanoi puzzle? -> ?",
         "examples": [
-            "Clues:\n- Alice finishes before Bob but after Carol.\n- Bob finishes immediately before Dave.\nOrder: -> Carol, Alice, Bob, Dave",
-            "Clues:\n- Tom stands immediately left of Jerry.\n- Spike stands somewhere to the right of Tom.\nArrange left to right: ->"
-        ]
-    },
-    {
-        "name": "Meta-Riddle Sequence (10)",
-        "instruction": "Each answer here hints at the next puzzle. Solve the sequence:",
-        "examples": [
-            "Puzzle 1: I'm tall when I'm young and short when I'm old. What am I? -> candle",
-            "Puzzle 2: (use CANDLE) Shift each letter by 2 in the alphabet: -> ecpgnf",
-            "Puzzle 3: (from 'ecpgnf') Rearrange to form an animal: -> fencap -> panfec? No—re-spell: 'capfen'? Actually 'fence p'? (example may vary)",
-            "Puzzle 4: (from your Puzzle 3 answer) What is hidden inside its name? ->"
+            "1 disk -> 1",
+            "2 disks -> 3",
+            "3 disks -> 7",
+            "4 disks -> 15"
         ]
     }
 ]

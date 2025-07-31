@@ -1,0 +1,77 @@
+[
+    {
+        "name": "Country to Capital (1)",
+        "instruction": "What is the capital of the following country: France -> ?",
+        "examples": [
+            "Japan -> Tokyo",
+            "Germany -> Berlin",
+            "Canada -> Ottawa"
+        ]
+    },
+
+    {
+        "name": "Simple Addition (1)",
+        "instruction": "Calculate the sum of these two numbers: 3 + 6 -> ?",
+        "examples": [
+            "5 + 8 -> 13",
+            "10 + 4 -> 14",
+            "7 + 2 -> 9"
+        ]
+    }, 
+
+    {
+        "name": "Unscramble Words (3)",
+        "instruction": "Unscramble the following letters to form a word: clinep -> ?",
+        "examples": [
+            "uptcmore -> computer",
+            "nbaaan -> banana",
+            "ephsatrome -> atmosphere"
+        ]
+    },
+    
+    {
+        "name": "Base 10 Arithmetic - Modulo (3)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 10: 14 % 5 -> ?",
+        "examples": [
+            "10 % 3 -> 1",
+            "9 % 2 -> 1",
+            "8 % 4 -> 0"
+        ]
+    },
+
+    {
+        "name": "Base 8 Arithmetic - Modulo (5)",
+        "instruction": "Compute the remainder of the first number divided by the second in base 8 and return it in base 8: 7 % 3 -> ?",
+        "examples": [
+            "6 % 4 -> 2",
+            "5 % 2 -> 1",
+            "4 % 4 -> 0"
+        ]
+    },
+
+    {
+        "name": "Symbol Substitution Puzzle (7)",
+        "instruction": "If ♦ = 2, ♣ = 3, and ♥ = 4, what is the value of ♦ + ♣ x ♥ -> ?",
+        "examples": [
+            "If ♦ = 2, ♣ = 3, ♥ = 7, ♦ - ♣ x ♥ -> -7",
+            "If ♠ = 10, ♣ = 5, ♥ = 2, ♠ / ♣ x ♥ -> 4"
+        ]
+    },
+
+    {
+        "name": "Anagram Logic Puzzle (8)",
+        "instruction": "Find the correct word that is an anagram of 'rescue' and also a synonym for 'secure' -> ?",
+        "examples": [
+            "listen -> silent",
+            "rescue -> secure"
+        ]
+    },
+
+    {
+        "name": "Word Math (9)",
+        "instruction": "Replace each letter with a unique digit so the equation holds: SEND + MORE = MONEY -> ?",
+        "examples": [
+            "SEND + MORE = MONEY -> 9567 + 1085 = 10652"
+        ]
+    }
+]
