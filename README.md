@@ -2,4 +2,7 @@
 
 1. Run `uv sync`. This installs all necessary packages for you.
 
-3. Run the `experiments.ipynb` notebook
+2. Run the `main.py` file for each model:
+```bash
+uv run main.py --model ["llama-3.1-8b-instruct", "phi-4", "qwen3"]
+```

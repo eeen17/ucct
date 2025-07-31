@@ -317,11 +317,11 @@ def graphByTask(
 
 def main(model_name: str, output_dir: str):
     output_dir = f"{output_dir}/{model_name.replace("/", "_")}"
-    try:
-        os.mkdir(output_dir)
-        print(f"Directory '{output_dir}' created successfully.")
-    except FileExistsError:
-        print(f"Directory '{output_dir}' created successfully.")
+    os.makedirs(output_dir, exist_ok=True)
+    # try:
+    #     print(f"Directory '{output_dir}' created successfully.")
+    # except FileExistsError:
+    #     print(f"Directory '{output_dir}' created successfully.")
 
     print("--- Setting up Model and Tokenizer with Unsloth ---")
 
@@ -355,7 +355,7 @@ def main(model_name: str, output_dir: str):
     for task, input in tqdm(processedTasks):
         print(f"\n\n{'-' * 10} {task.name} {'-' * 10}\n")
         _ = model.generate(
-            input_ids=torch.tensor([input.tokenized]).to("cuda"),
+            input_ids=torch.tensor([input.tokenized]).to("cuda:0"),
             streamer=text_streamer,
             max_new_tokens=256,
             use_cache=True,
