@@ -60,7 +60,7 @@ def formatTasks(model_name: str, suite: list[dict[str, str | list[str]]]) -> lis
                         task=str(t["instruction"]),
                         br = "\nExamples:\n",
                         examples="\n".join(t["examples"]),
-                        input_footer = "<|im_end|>\n<im_start>assistant\n<think>\n\n</think>\n\n"   # disable cot
+                        input_footer = "<|im_end|>\n<im_start>assistant\n<think>"   # disable cot
                     ),
                 )
         case "unsloth/gemma-3n-E4B-it":
@@ -439,7 +439,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, default="./output")
 
     args = parser.parse_args()
-
+    
     match str(args.model_name).lower():
         case "qwen3":
             model_name = "unsloth/Qwen3-14B"
