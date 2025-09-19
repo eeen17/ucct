@@ -375,15 +375,15 @@ def main(model_name: str, output_dir: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="VisualizeHiddenStates")
     parser.add_argument(
-        "--model_name", type=str, choices=["llama-3.1-8b-instruct", "phi-4", "qwen3"], default="llama-3.1-8b-instruct"
+        "--model_name", type=str, choices=["llama-3.1-8b-instruct", "phi-4", "gemma-3n"], default="llama-3.1-8b-instruct"
     )
     parser.add_argument("--output_dir", type=str, default="./output")
 
     args = parser.parse_args()
 
     match str(args.model_name).lower():
-        case "qwen3":
-            model_name = "unsloth/Qwen3-14B"
+        case "gemma-3n":
+            model_name = "unsloth/gemma-3-4b-it"
         case "phi-4":
             model_name = "unsloth/Phi-4"
         case _:

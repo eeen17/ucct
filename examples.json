@@ -1,0 +1,204 @@
+{
+    "commonsense": [
+        {
+            "instruction": "The evacuation became mandatory, so what came on the TV?",
+            "choices": {
+                "label": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E"
+                ],
+                "text": [
+                    "advisory",
+                    "mandate",
+                    "soap opera",
+                    "elective",
+                    "optional"
+                ]
+            },
+            "answer": "A"
+        },
+        {
+            "instruction": " A person who fears A.I. has a main fear that man will lose the ability to what?",
+            "choices": {
+                "label": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E"
+                ],
+                "text": [
+                    "go on vacation",
+                    "work",
+                    "cross street",
+                    "control computer",
+                    "separate things"
+                ]
+            },
+            "answer": "D"
+        },
+        {
+            "instruction": " Where do you throw garbage?",
+            "choices": {
+                "label": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E"
+                ],
+                "text": [
+                    "toronto",
+                    "floor",
+                    "trashcan",
+                    "television",
+                    "in your neighbours yard"
+                ]
+            },
+            "answer": "C"
+        }
+    ],
+    "logic": [
+        {
+            "query": "Declarative knowledge is knowledge about \"which of the following is the world\". It can be directly stated. The required psychological process is mainly memory. Procedural knowledge is knowledge about \"how to do\". It cannot be stated directly. It can only be inferred by a certain form of assignment. It exists. According to the above definition, Which of the following classification is correct.",
+            "choices": {
+                "label": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "text": [
+                    "’Repairing bicycles is declarative knowledge, and‘ music appreciation ’requires procedural knowledge.",
+                    "\"The capital of the United States is Washington\" is declarative knowledge, ‘addition and subtraction’ requires procedural knowledge.",
+                    "\"Boiling at 100 ° C with water\" is declarative knowledge, \"the molecular formula of water is H, O\" is procedural knowledge.",
+                    "\"riding archery\" is declarative knowledge, \"red light stop. Green light line\" is procedural knowledge."
+                ]
+            },
+            "answer": 1
+        },
+        {
+            "instruction": "In the school library, only by showing the certificate issued by the department can you enter the special collection library. If you do not participate in the research group of the professor, the department will not issue a certificate. Xiao Zhang was recently absorbed by Professor Li into his own because of his outstanding performance Xiao Wang quit Professor Chen's group last week for personal reasons. If the above assertion is true, which of the following must be true?",
+            "choices": {
+                "label": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "text": [
+                    "Xiao Zhang can now access the special collection library.",
+                    "Xiao Wang cannot access the special collection library now.",
+                    "As long as you enter the professor's research group, you can access the special collection library.",
+                    "Did not obtain a certificate issued by the faculty, indicating that the group of professors did not participate."
+                ]
+            },
+            "answer": 1
+        },
+        {
+            "instruction": "Dismissal of a civil servant: Refers to an act or fact that the employment department or unit of a state organ has terminated its positional relationship with a staff member under certain conditions in accordance with the law. Which of the following administrative actions must be dismissed:",
+            "choices": {
+                "label": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "text": [
+                    "Civil servant Wang has been absent from work for 30 days without a reason in less than one year. According to the relevant regulations of civil servants, he had to leave the unit.",
+                    "Zhang has been working in an institution for 30 full years, and he has reached 60 in this year.",
+                    "Zhou was admitted to the General Office of the Provincial Government for secretarial work after passing an exam last September. Although hard-working and diligent, it is still difficult to be competent. Relevant departments have to ask him to seek another job in accordance with the \"Interim Regulations of the National Civil Service\".",
+                    "The application for the departure of a civil servant is approved by the competent authority, leaving the original unit to work for a company."
+                ]
+            },
+            "answer": 0
+        }
+    ],
+    "reasoning": [
+        {
+            "instruction": "An engineer measured the time it takes sound to travel through samples of different materials. All of the samples were identical in shape and size. The measurements were made using ultrasonic waves with a frequency of 5 megahertz. Which question was the engineer most likely trying to answer?",
+            "choices": {
+                "text": [
+                    "In which material does sound travel fastest?",
+                    "In which material does sound travel farthest?",
+                    "Does frequency affect the distance sound travels?",
+                    "Does the shape of the medium affect the speed of sound?"
+                ],
+                "label": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ]
+            },
+            "answer": "A"
+        },
+        {
+            "instruction": "Which of these most likely has the GREATEST mass?",
+            "choices": {
+                "text": [
+                    "Chicken",
+                    "Puppy",
+                    "Lizard",
+                    "Horse"
+                ],
+                "label": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ]
+            },
+            "answer": "D"
+        },
+        {
+            "instruction": "A student is trying to identify a mineral that has a nonmetallic luster and is black. It can also be scratched with a fingernail. According to the mineral reference sheet, the unidentified mineral is most likely",
+            "choices": {
+                "text": [
+                    "mica.",
+                    "magnetite.",
+                    "hornblende.",
+                    "quartz."
+                ],
+                "label": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ]
+            },
+            "answer": "A"
+        }
+    ],
+    "math": [
+        {
+            "instruction": "What is the greatest possible positive integer value of $x$ if $\\displaystyle\\frac{x^4}{x^2} < 10$?",
+            "answer": "On the left-hand side, $x^2$ cancels, reducing the inequality to $x^2<10$. Since  $3^2=9<10$ while $4^2=16>10$, the greatest possible value of $x$ is $\\boxed{3}$."
+        },
+        {
+            "instruction": "Suppose functions $g$ and $f$ have the properties that $g(x)=3f^{-1}(x)$ and $f(x)=\\frac{24}{x+3}$. For what value of $x$ does $g(x)=15$?",
+            "answer": "Since $g(x)=3f^{-1}(x)$, we have that $3f^{-1}(x)=15$. This means that $f^{-1}(x)=\\frac{15}{3}=5$. Since $f$ and $f^{-1}$ are inverse functions, if $f^{-1}(x)=5$, we also have that $f(5)=x$. Substituting this back into our equation $f(x)=\\frac{24}{x+3}$, we get that $$x=f(5)=\\frac{24}{5+3}=\\boxed{3}.$$"
+        },
+        {
+            "instruction": "Let \\[f(x) =\n\\begin{cases}\n3x^2 + 2&\\text{if } x\\le 3, \\\\\nax - 1 &\\text{if } x>3.\n\\end{cases}\n\\]Find $a$ if the graph of $y=f(x)$ is continuous (which means the graph can be drawn without lifting your pencil from the paper).",
+            "answer": "If the graph of $f$ is continuous, then the graphs of the two cases must meet when $x=3$, which (loosely speaking) is the dividing point between the two cases.  Therefore, we must have $3(3^2) + 2 = 3a - 1$.  Solving this equation gives $a = \\boxed{10}$."
+        }
+    ],
+    "code": [
+        {
+            "instruction": "Write a python function to find the sum of two integers without using the '+' or '-' operators.",
+            "answer": "Here is the code to solve this problem: \n```python\ndef add_without_operators(a, b):\n    # 32 bits integer max\n    MAX = 0x100000000\n    # Get rid of sign bit for the mask\n    mask = 0xffffffff\n    while b != 0:\n        # ^ get different bits and & gets double 1s, << moves carry\n        a, b = (a ^ b) % MAX, ((a & b) << 1) % MAX\n    # if a is negative, get a's 32 bits complement positive first\n    # then get 32-bit positive's python complement negative\n    return a if a <= 0x7fffffff else ~(a ^ mask)\n```"
+        },
+        {
+            "instruction": "Write a python function to find the largest number in a list that is smaller than the target number.",
+            "answer": "Here is the code to solve this problem: \n```python\ndef find_smaller_than_target(nums, target):\n    nums.sort()\n    for num in reversed(nums):\n        if num < target:\n            return num\n```"
+        },
+        {
+            "instruction": "Write a function that takes a list of strings and returns the list sorted by the length of the strings. If two strings have the same length, they should be sorted alphabetically.",
+            "answer": "Here is the code to solve this problem: \n```python\ndef sort_by_length_and_alphabetically(strings):\n    return sorted(strings, key=lambda x: (len(x), x))\n\nif sort_by_length_and_alphabetically([\"dog\", \"cat\", \"elephant\", \"ant\", \"cow\"])==[\"ant\", \"cat\", \"cow\", \"dog\", \"elephant\"] and sort_by_length_and_alphabetically([\"python\", \"java\", \"c\", \"ruby\", \"javascript\"])==[\"c\", \"java\", \"ruby\", \"python\", \"javascript\"] and sort_by_length_and_alphabetically([\"hello\", \"world\", \"hi\", \"hey\"])==[\"hi\", \"hey\", \"hello\", \"world\"]:\n    print(\"solved\")\n```"
+        }
+    ]
+}

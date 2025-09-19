@@ -1,241 +1,342 @@
 [
+	{
+		"category" : "commonsense",
+		"instruction": "Where are you likely to find a paper program?",
+		"choices": {
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D",
+				"E"
+			],
+			"text": [
+				"theater",
+				"computer",
+				"opera",
+				"television",
+				"concert"
+			]
+		},
+		"answer": "C"
+	},
+	{
+		"category" : "commonsense",
+		"instruction": "Where is someone looking for a job likely to find a computer?",
+		"choices": {
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D",
+				"E"
+			],
+			"text": [
+				"department store",
+				"desktop",
+				"school",
+				"space shuttle",
+				"library"
+			]
+		},
+		"answer": "E"
+	},
+	{
+		"category" : "commonsense",
+		"instruction": "Where can you purchase food and eat it at tables?",
+		"choices": {
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D",
+				"E"
+			],
+			"text": [
+				"house",
+				"fast food restaurant",
+				"library",
+				"conference",
+				"paper"
+			]
+		},
+		"answer": "B"
+	},
+	{
+		"category" : "commonsense",
+		"instruction": "Who is likely yo have a caring heart?",
+		"choices": {
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D",
+				"E"
+			],
+			"text": [
+				"person",
+				"species",
+				"artichoke",
+				"all mammals",
+				"live animal"
+			]
+		},
+		"answer": "A"
+	},
+	{
+		"category" : "commonsense",
+		"instruction": "Where would a lizard surprise a person?",
+		"choices": {
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D",
+				"E"
+			],
+			"text": [
+				"new mexico",
+				"forrest",
+				"dessert",
+				"garden",
+				"creek"
+			]
+		},
+		"answer": "D"
+	},
     {
-        "name": "Country to Capital (1)",
-        "instruction": "What is the capital of the following country: France -> ?",
-        "examples": [
-            "Japan -> Tokyo",
-            "Germany -> Berlin",
-            "Canada -> Ottawa"
-        ]
-    },
+		"category": "logic",
+		"instruction": "Nowadays, more and more parents are gradually aware of the importance of emotional intelligence, and they are enthusiastic about the promotion of \"children's emotional intelligence training\" by training institutions, and their tens of thousands of tuition a year can not stop their enthusiasm. Some experts have analyzed their There are several reasons: one is to realize the emotional intelligence of the child; the other is that parents feel that there is a problem in educating their children, and they would rather send the children out for education instead of their own educational ideas Finding the reason, this is actually a performance of shirk responsibility; in addition, it comes from the \"self-realization\" values cast in the daily working model of white-collar workers, making young parents over-anxious in the process of educating their children, and also leading to hot training classes s reason. What's most likely to be discussed next?",
+		"choices": {
+			"label": [
+				0,
+				1,
+				2,
+				3
+			],
+			"text": [
+				"How to choose an EQ training course.",
+				"Existing status of children's emotional intelligence training.",
+				"How to understand EQ training rationally.",
+				"The significance of emotional intelligence education for children's growth."
+			]
+		},
+		"answer": 2
+	},
+	{
+		"category": "logic",
+		"instruction": "Different names refer to different names for the same thing in different social groups, different regions or different times. According to the above definitions, Which of the following are not synonyms:.",
+		"choices": {
+			"label": [
+				0,
+				1,
+				2,
+				3
+			],
+			"text": [
+				"Older generation is still used to calling matches \"foreign fire\".",
+				"Now, salespeople often call female customers \"beauty\".",
+				"In the Ming Dynasty, people generally called toads or pheasants.",
+				"The Sichuanese said that the sweet potato is actually the sweet potato that the Henanese said."
+			]
+		},
+		"answer": 1
+	},
+	{
+		"category": "logic",
+		"instruction": "At present, \"culture\" has become one of the hottest words. How to inherit and carry forward traditional culture, form the Chinese people's own culture, and strengthen our cultural soft power has become a hot topic. But this consensus is actually quite vague and many controversies Born because of this. Learn traditional Chinese characters, wear Tang costumes, and start classes . the excitement surrounding the \"traditional culture\" is one after another, but the discussion behind them is inseparable from a deep analysis of the concept of \"culture\". If this is the beginning of an article, what is most likely to follow?",
+		"choices": {
+			"label": [
+				0,
+				1,
+				2,
+				3
+			],
+			"text": [
+				"Discussing \"What is culture\".",
+				"Explore how to inherit and carry forward traditional culture.",
+				"Interpretation and reflection on the current \"retro-style\".",
+				"Analyzing why \"culture\" has become one of the hottest words of the moment."
+			]
+		},
+		"answer": 0
+	},
+	{
+		"category": "logic",
+		"instruction": "Price demand elasticity: refers to the degree of response or sensitivity of demand to price changes, and its size is expressed by the coefficient Ep = absolute value of change in demand (%) ÷ price change (%). Based on the above definition, which of the following statements is true?",
+		"choices": {
+			"label": [
+				0,
+				1,
+				2,
+				3
+			],
+			"text": [
+				"When the price elasticity of demand Ep> 1, it means that a change in price will cause a large change in demand.",
+				"When Ep = 1, it shows that the impact of price changes on changes in demand is small, so it can be sold at as high prices as possible.",
+				"The size of C. Ep actually reflects the sensitivity of demand to cost changes.",
+				"According to the law of supply and demand, there can be no products with Ep <1."
+			]
+		},
+		"answer": 0
+	},
+	{
+		"category": "logic",
+		"instruction": "According to whether the perpetrator expresses intention, the behavior in civil law can be divided into intentional behavior and non-ideal behavior. Expressive behavior refers to the behavior of the perpetrator through intentional expression; non-ideal behavior refers to the behavior of the party without the intention of expression It mainly includes factual acts and illegal acts. Factual acts refer to acts that subjectively do not have the meaning of a civil legal relationship, but cause the consequences of civil legal relationships in accordance with the provisions of the law. According to the above definitions, Which of the following are factual acts:.",
+		"choices": {
+			"label": [
+				0,
+				1,
+				2,
+				3
+			],
+			"text": [
+				"Zhang San and Li Si sign a house lease contract.",
+				"Uncle Li feels that time is running out and makes a will.",
+				"Professor Wang wrote a dissertation and obtained the copyright of the dissertation.",
+				"Boss Zhao donated his property to the babysitter who has been serving him for many years."
+			]
+		},
+		"answer": 2
+	},
     {
-        "name": "Simple Addition (1)",
-        "instruction": "Calculate the sum of these two numbers: 3 + 6 -> ?",
-        "examples": [
-            "5 + 8 -> 13",
-            "10 + 4 -> 14",
-            "7 + 2 -> 9"
-        ]
-    },
+		"category": "reasoning",
+		"question": "A scientist put several different plants in a sealed container. Every hour, she checked the oxygen in the container to see if it changed. How did the oxygen in the container most likely change?",
+		"choices": {
+			"text": [
+				"The amount of oxygen increased.",
+				"The amount of oxygen decreased.",
+				"The oxygen was transformed into water.",
+				"The oxygen was transformed into carbon dioxide."
+			],
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D"
+			]
+		},
+		"answer": "A"
+	},
+	{
+		"category": "reasoning",
+		"question": "A student investigates how speed changes as a ball travels down a ramp. Measurements taken by computer every second are recorded on a data table. Which diagram will best display the data from this table?",
+		"choices": {
+			"text": [
+				"a bar graph",
+				"a line graph",
+				"a pie chart",
+				"a pictograph"
+			],
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D"
+			]
+		},
+		"answer": "B"
+	},
+	{
+		"category": "reasoning",
+		"question": "The weather forecast says a heavy snowstorm is coming later today. Which weather observation is likely just before the snow?",
+		"choices": {
+			"text": [
+				"clear sky",
+				"thick grey clouds",
+				"small white clouds",
+				"warm temperature"
+			],
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D"
+			]
+		},
+		"answer": "B"
+	},
+	{
+		"category": "reasoning",
+		"question": "Which event occurs on a daily cycle?",
+		"choices": {
+			"text": [
+				"The Sun rises and sets.",
+				"Earth tilts on its axis.",
+				"Earth revolves around the Sun.",
+				"The Moon revolves around Earth."
+			],
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D"
+			]
+		},
+		"answer": "A"
+	},
+	{
+		"category": "reasoning",
+		"question": "The crust, the mantle, and the core are structures of Earth. Which description is a feature of Earth's mantle?",
+		"choices": {
+			"text": [
+				"contains fossil remains",
+				"consists of tectonic plates",
+				"is located at the center of Earth",
+				"has properties of both liquids and solids"
+			],
+			"label": [
+				"A",
+				"B",
+				"C",
+				"D"
+			]
+		},
+		"answer": "D"
+	},
     {
-        "name": "Base 10 Arithmetic - Addition (1)",
-        "instruction": "Add the two numbers in base 10: 14 + 7 -> ?",
-        "examples": [
-            "5 + 9 -> 14",
-            "12 + 8 -> 20",
-            "3 + 11 -> 14"
-        ]
-    },
+		"category": "math",
+		"instruction": "The graph of the equation $y = \\frac{x}{x^3 + Ax^2 + Bx + C}$, where $A,B,C$ are integers, is shown below. Find $A + B + C$. [asy]\nimport graph; size(8.14cm); real lsf=0.5; pen dps=linewidth(0.7)+fontsize(10); defaultpen(dps); pen ds=black; real xmin=-3.52,xmax=4.62,ymin=-3.66,ymax=3.94;\n\npen cqcqcq=rgb(0.75,0.75,0.75);\n\n/*grid*/ pen gs=linewidth(0.7)+cqcqcq+linetype(\"2 2\"); real gx=1,gy=1;\nfor(real i=ceil(xmin/gx)*gx;i<=floor(xmax/gx)*gx;i+=gx) draw((i,ymin)--(i,ymax),gs); for(real i=ceil(ymin/gy)*gy;i<=floor(ymax/gy)*gy;i+=gy) draw((xmin,i)--(xmax,i),gs);\n\nLabel laxis; laxis.p=fontsize(10);\n\nxaxis(\"$x$\",xmin,xmax,Ticks(laxis,Step=1.0,Size=2,NoZero),Arrows(6),above=true); yaxis(\"$y$\",ymin,ymax,Ticks(laxis,Step=1.0,Size=2,NoZero),Arrows(6),above=true); real f1(real x){return x/((x-1)*(x-2)*(x+2));} draw(graph(f1,-3.51,-2.01),linewidth(1.2)); draw(graph(f1,-1.99,0.99),linewidth(1.2)); draw(graph(f1,1.01,1.99),linewidth(1.2)); draw(graph(f1,2.01,4.61),linewidth(1.2));\n\nclip((xmin,ymin)--(xmin,ymax)--(xmax,ymax)--(xmax,ymin)--cycle);\n\n[/asy]",
+		"answer": "We can see from the graph that there are three vertical asymptotes at $x = -2, 1, 2$. It follows that the denominator of the equation is given by $x^3 + Ax^2 + Bx + C = (x + 2)(x - 2)(x - 1) = (x^2 - 4)(x-1) = x^3 - x^2 - 4x + 4$. Thus, $A+B+C = -1 -4 + 4 = \\boxed{-1}$."
+	},
+	{
+		"category": "math",
+		"instruction": "What is the value of $\\sqrt{15 - 6\\sqrt{6}} + \\sqrt{15 + 6\\sqrt{6}}$?",
+		"answer": "Solution 1:\nLet $x = \\sqrt{15 - 6\\sqrt{6}} + \\sqrt{15 + 6\\sqrt{6}}.$  Then \\[x^2 = \\left( \\sqrt{15 - 6\\sqrt{6}} \\right)^2 + 2 \\sqrt{15 - 6\\sqrt{6}} \\sqrt{15 + 6\\sqrt{6}} + \\left( \\sqrt{15 + 6\\sqrt{6}} \\right)^2 \\] We observe that $\\left( 15 - 6\\sqrt{6} \\right)\\left( 15 + 6\\sqrt{6} \\right) = 15^2 - \\left(6\\sqrt{6}\\right)^2 = 225 - 216 = 9$ because of difference of squares.  So \\[x^2 = \\left( 15 - 6\\sqrt{6} \\right) + 2\\sqrt{9} + \\left( 15 + 6\\sqrt{6} \\right)\\] The $6\\sqrt{6}$ terms cancel, and so $x^2 = 36.$  Since $x$ must be positive, then $x = \\boxed{6}$ and not $-6$.\n\nSolution 2:\nLet $a+b\\sqrt{6} = \\sqrt{15+6\\sqrt{6}}$ for some $a$ and $b$. Squaring, we get $(a^2+6b^2) + 2ab\\sqrt{6} = 15 + 6\\sqrt{6}$. After some experimentation, we see this is true if $a=3$, $b=1$. So $\\sqrt{15+6\\sqrt{6}} = 3+\\sqrt{6}$. Similarly, we find that $\\sqrt{15-6\\sqrt{6}} = 3-\\sqrt{6}$. So $\\sqrt{15-6\\sqrt{6}} + \\sqrt{15+6\\sqrt{6}} = (3-\\sqrt{6}) + (3+\\sqrt{6}) = \\boxed{6}$."
+	},
+	{
+		"category": "math",
+		"instruction": "You have 50 dimes and 20 quarters. What percent of the value of your money is in quarters?",
+		"answer": "The amount in quarters is $20\\times25$ cents and the total amount is $50\\times10+20\\times25$ cents. The percent of the value in quarters is $$\\frac{20\\times25}{50\\times10+20\\times25}=\\frac{500}{500+500}=\\frac{500}{1000}=\\boxed{50\\%}.$$"
+	},
+	{
+		"category": "math",
+		"instruction": "What is the degree of the polynomial $(3x^2 +11)^{12}$?",
+		"answer": "The degree of the polynomial is the degree of the highest term.  Since the degree of $3x^2 +11$ is 2 and since $(x^a)^{12} = x^{12a}$ for any positive constant $a$, the answer is $2 \\cdot 12 = \\boxed{24}$."
+	},
+	{
+		"category": "math",
+		"instruction": "If $A=4-3i$, $M=-4+i$, $S=i$, and $P=2$, find $A-M+S-P$.",
+		"answer": "Adding real parts and imaginary parts separately, we have $(4-(-4)+0-2)+(-3-1+1-0)i=\\boxed{6-3i}$."
+	},
     {
-        "name": "Base 10 Arithmetic - Subtraction (1)",
-        "instruction": "Subtract the second number from the first in base 10: 14 - 7 -> ?",
-        "examples": [
-            "9 - 5 -> 4",
-            "12 - 4 -> 8",
-            "10 - 6 -> 4"
-        ]
-    },
-    {
-        "name": "English to French Translation (2)",
-        "instruction": "Translate the following from English to French: are you my friend -> ?",
-        "examples": [
-            "the cat is black -> le chat est noir",
-            "the dog is white -> le chien est blanc",
-            "I love science -> j'aime la science"
-        ]
-    },
-    {
-        "name": "Base 10 Arithmetic - Multiplication (2)",
-        "instruction": "Multiply the two numbers in base 10: 3 x 7 -> ?",
-        "examples": [
-            "5 x 2 -> 10",
-            "6 x 3 -> 18",
-            "4 x 4 -> 16"
-        ]
-    },
-    {
-        "name": "Synonym Matching (2)",
-        "instruction": "Find a synonym for the given word: happy -> ?",
-        "examples": [
-            "fast -> quick",
-            "sad -> unhappy",
-            "angry -> mad"
-        ]
-    },
-    {
-        "name": "Unscramble Words (3)",
-        "instruction": "Unscramble the following letters to form a word: clinep -> ?",
-        "examples": [
-            "uptcmore -> computer",
-            "nbaaan -> banana",
-            "ephsatrome -> atmosphere"
-        ]
-    },
-    {
-        "name": "Base 10 Arithmetic - Modulo (3)",
-        "instruction": "Compute the remainder of the first number divided by the second in base 10: 14 % 5 -> ?",
-        "examples": [
-            "10 % 3 -> 1",
-            "9 % 2 -> 1",
-            "8 % 4 -> 0"
-        ]
-    },
-    {
-        "name": "Base 9 Arithmetic - Addition (4)",
-        "instruction": "Add the two numbers in base 9 and return the result in base 9: 7 + 5 -> ?",
-        "examples": [
-            "3 + 4 -> 7",
-            "5 + 2 -> 7",
-            "6 + 3 -> 10"
-        ]
-    },
-    {
-        "name": "Base 9 Arithmetic - Subtraction (4)",
-        "instruction": "Subtract the second number from the first in base 9 and return the result in base 9: 8 - 5 -> ?",
-        "examples": [
-            "6 - 2 -> 4",
-            "7 - 3 -> 4",
-            "5 - 5 -> 0"
-        ]
-    },
-    {
-        "name": "Base 8 Arithmetic - Addition (4)",
-        "instruction": "Add the two numbers in base 8 and return the result in base 8: 6 + 3 -> ?",
-        "examples": [
-            "5 + 2 -> 7",
-            "7 + 1 -> 10",
-            "4 + 3 -> 7"
-        ]
-    },
-    {
-        "name": "Base 8 Arithmetic - Subtraction (4)",
-        "instruction": "Subtract the second number from the first in base 8 and return the result in base 8: 7 - 3 -> ?",
-        "examples": [
-            "6 - 2 -> 4",
-            "5 - 1 -> 4",
-            "7 - 7 -> 0"
-        ]
-    },
-    {
-        "name": "minus -> plus (5)",
-        "instruction": "Find the solution based on the pattern: 10 - 4 -> ?",
-        "examples": [
-            "3 - 2 -> 5",
-            "8 - 5 -> 13",
-            "3 - 6 -> 9"
-        ]
-    },
-    {
-        "name": "Base 9 Arithmetic - Multiplication (5)",
-        "instruction": "Multiply the two numbers in base 9 and return the result in base 9: 3 x 4 -> ?",
-        "examples": [
-            "2 x 3 -> 6",
-            "4 x 2 -> 8",
-            "3 x 3 -> 11"
-        ]
-    },
-    {
-        "name": "Base 9 Arithmetic - Modulo (5)",
-        "instruction": "Compute the remainder of the first number divided by the second in base 9 and return it in base 9: 8 % 3 -> ?",
-        "examples": [
-            "7 % 2 -> 1",
-            "6 % 4 -> 2",
-            "5 % 5 -> 0"
-        ]
-    },
-    {
-        "name": "Base 8 Arithmetic - Multiplication (5)",
-        "instruction": "Multiply the two numbers in base 8 and return the result in base 8: 3 x 3 -> ?",
-        "examples": [
-            "2 x 2 -> 4",
-            "4 x 2 -> 10",
-            "3 x 3 -> 11"
-        ]
-    },
-    {
-        "name": "Base 8 Arithmetic - Modulo (5)",
-        "instruction": "Compute the remainder of the first number divided by the second in base 8 and return it in base 8: 7 % 3 -> ?",
-        "examples": [
-            "6 % 4 -> 2",
-            "5 % 2 -> 1",
-            "4 % 4 -> 0"
-        ]
-    },
-    {
-        "name": "Pattern Induction (6)",
-        "instruction": "Find the next number in the sequence: 2, 4, 8, 16, ? ->",
-        "examples": [
-            "1, 3, 5, 7 -> 9",
-            "3, 6, 12, 24 -> 48"
-        ]
-    },
-    {
-        "name": "Prime Factor Decomposition (6)",
-        "instruction": "List the prime factors of 84 -> ?",
-        "examples": [
-            "4 -> 2, 2",
-            "12 -> 2, 2, 3",
-            "35 -> 7, 5"
-        ]
-    },
-    {
-        "name": "Symbol Substitution Puzzle (7)",
-        "instruction": "If ♦ = 2, ♣ = 3, and ♥ = 4, what is the value of ♦ + ♣ x ♥ -> ?",
-        "examples": [
-            "If ♦ = 2, ♣ = 3, ♥ = 7, ♦ - ♣ x ♥ -> -7",
-            "If ♠ = 10, ♣ = 5, ♥ = 2, ♠ / ♣ x ♥ -> 4"
-        ]
-    },
-    {
-        "name": "Logic Deduction (8)",
-        "instruction": "If all bloops are razzles and some razzles are jinks, can we conclude that some bloops are jinks?",
-        "examples": [
-            "All apples are fruits. Some fruits are yellow. -> Cannot conclude some apples are yellow.",
-            "All mammals are animals. Some animals are fast. -> Cannot conclude some mammals are fast."
-        ]
-    },
-    {
-        "name": "Anagram Logic Puzzle (8)",
-        "instruction": "Find the correct word that is an anagram of 'rescue' and also a synonym for 'secure' -> ?",
-        "examples": [
-            "listen -> silent",
-            "rescue -> secure"
-        ]
-    },
-    {
-        "name": "Mini Cryptogram (8)",
-        "instruction": "Decode the short substitution cipher (A→D, B→E, etc).",
-        "examples": [
-            "KHOOR -> HELLO",
-            "ZRUOG -> WORLD",
-            "SBEER -> PYBBO",
-            "FDHVDU -> CAESAR",
-            "MDLLOL ->"
-        ]
-    },
-    {
-        "name": "Word Math (9)",
-        "instruction": "Replace each letter with a unique digit so the equation holds: SEND + MORE = MONEY -> ?",
-        "examples": [
-            "SEND + MORE = MONEY -> 9567 + 1085 = 10652"
-        ]
-    },
-    {
-        "name": "Advanced Logic Grid (9)",
-        "instruction": "Use the clues to determine the correct ordering or pairing.",
-        "examples": [
-            "Clues:\n- Alice finishes before Bob but after Carol.\n- Bob finishes immediately before Dave.\nOrder: -> Carol, Alice, Bob, Dave",
-            "Clues:\n- Tom stands immediately left of Jerry.\n- Spike stands somewhere to the right of Tom.\nArrange left to right: ->"
-        ]
-    },
-    {
-        "name": "Meta-Riddle Sequence (10)",
-        "instruction": "Each answer here hints at the next puzzle. Solve the sequence:",
-        "examples": [
-            "Puzzle 1: I'm tall when I'm young and short when I'm old. What am I? -> candle",
-            "Puzzle 2: (use CANDLE) Shift each letter by 2 in the alphabet: -> ecpgnf",
-            "Puzzle 3: (from 'ecpgnf') Rearrange to form an animal: -> fencap -> panfec? No—re-spell: 'capfen'? Actually 'fence p'? (example may vary)",
-            "Puzzle 4: (from your Puzzle 3 answer) What is hidden inside its name? ->"
-        ]
-    }
+		"instruction": "Write a python function to find the number of times a subarray with a given sum appears in the given array.",
+		"output": "Here is the code to solve this problem: \n```python\ndef subarray_count(nums, k):\n    memo = {0: 1}  # When the prefix sum equals k, default value is 1\n    sums = res = 0\n    for num in nums:\n        sums += num\n        if sums - k in memo:\n            res += memo[sums-k]\n        memo[sums] = memo.get(sums, 0) + 1\n    return res\n```"
+	},
+	{
+		"instruction": "Write a function that takes a list of lists as input and returns a list containing the elements at the specified index from each inner list.",
+		"output": "Here is the code to solve this problem: \n```python\ndef extract_elements(list_of_lists, index):\n    result = []\n    for lst in list_of_lists:\n        if len(lst) > index:\n            result.append(lst[index])\n    return result\n```"
+	},
+	{
+		"instruction": "Write a function that takes a string and returns the number of balanced brackets groups. A group of brackets is considered balanced if every opening bracket '(' has a corresponding closing bracket ')'.",
+		"output": "Here is the code to solve this problem: \n```python\ndef countBalancedBrackets(s):\n    stack = []\n    groups = 0\n    for char in s:\n        if char == '(':\n            stack.append(char)\n        elif char == ')' and stack:\n            stack.pop()\n            if not stack:\n                groups += 1\n    return groups\n```"
+	},
+	{
+		"instruction": "Write a function to find the shortest time required to reach from source to all other nodes in a weighted, directed graph using Dijkstra's algorithm. If it is not possible to reach all nodes, return -1.",
+		"output": "Here is the code to solve this problem: \n```python\nfrom collections import defaultdict\nfrom heapq import heappush, heappop\n\ndef network_delay_time(times, N, K):\n    inf = 10 ** 10\n    edges = defaultdict(list)\n    for u, v, w in times:\n        edges[u].append((v, w))\n\n    visited = set()\n    ans = 0\n\n    q = []\n    heappush(q, (0, K))\n    while q:\n        cost, node = heappop(q)\n        if node in visited:\n            continue\n        visited.add(node)\n        ans = max(ans, cost)\n\n        for v, w in edges[node]:\n            if v in visited:\n                continue\n            heappush(q, (cost + w, v))\n\n    return ans if len(visited) == N else -1\n```"
+	},
+	{
+		"instruction": "Write a python function that takes a list of integers as input and returns the length of the longest increasing subsequence (LIS) in the list.",
+		"output": "Here is the code to solve this problem: \n```python\ndef lis_length(nums):\n    if not nums:\n        return 0\n    dp = [1] * len(nums)\n    for i in range(len(nums)):\n        for j in range(i):\n            if nums[i] > nums[j]:\n                dp[i] = max(dp[i], dp[j] + 1)\n    return max(dp)\n```"
+	}
 ]
