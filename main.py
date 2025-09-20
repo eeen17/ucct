@@ -3,7 +3,7 @@ import torch
 from unsloth import FastLanguageModel
 import argparse
 from typing import NamedTuple
-from transformers import TextStreamer  # type: ignore
+from transformers import TextStreamer, set_seed  # type: ignore
 
 import pandas as pd
 import numpy as np
@@ -20,7 +20,9 @@ def attachHooks(model, layers, all_layer_outputs):
     
     def get_layer_output_hook(layer_idx):
         def hook(module, input, output):
-            all_layer_outputs[layer_idx] = output[0].detach()
+            hidden_states = output[0]
+            if hidden_states.shape[1] > 1:
+                all_layer_outputs[layer_idx] = hidden_states.detach()
         return hook
 
     hook_handles = []
@@ -117,9 +119,7 @@ def processTaskInput(task: Task, tokenizer) -> Input:
     recon_tokens = []
     print(task)
     for i, x in enumerate(task[1:]):
-        section_tokens = tokenizer.encode(x)[
-            0 if i == 0 else 1 :
-        ]
+        section_tokens = tokenizer.encode(x)
         recon_tokens.extend(section_tokens)
         lengths.append(len(section_tokens))
 
@@ -402,7 +402,6 @@ def main(model_name: str, output_dir: str, runs=None):
         processedTasks.append((task, processTaskInput(task, tokenizer)))
     text_streamer = TextStreamer(tokenizer)
 
-    
     task_outputs: dict[int, list[torch.Tensor]] = {}
 
     if runs is None:
@@ -418,13 +417,13 @@ def main(model_name: str, output_dir: str, runs=None):
             task_outputs[task_num] = all_layer_outputs.copy()
 
         hidden_states_by_task = calcHiddenStates(processedTasks, num_layers, task_outputs)
-        
         print(f"{'=' * 10} WRITING RESULTS {'=' * 10}")
         saveTasks(hidden_states_by_task, model_name, output_dir)
         graphByTask(tasks, hidden_states_by_task, num_layers, model_name, output_dir)
         return
 
     for r in range(runs):
+        set_seed(r)
         print(f"{'=' * 10} GENERATING {'=' * 10}")
         for task_num, (task, input) in enumerate(tqdm(processedTasks)):
             print(f"\n\n{'-' * 10} {task_num} {'-' * 10}\n")
