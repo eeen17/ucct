@@ -63,7 +63,7 @@
     ],
     "logic": [
         {
-            "query": "Declarative knowledge is knowledge about \"which of the following is the world\". It can be directly stated. The required psychological process is mainly memory. Procedural knowledge is knowledge about \"how to do\". It cannot be stated directly. It can only be inferred by a certain form of assignment. It exists. According to the above definition, Which of the following classification is correct.",
+            "instruction": "Declarative knowledge is knowledge about \"which of the following is the world\". It can be directly stated. The required psychological process is mainly memory. Procedural knowledge is knowledge about \"how to do\". It cannot be stated directly. It can only be inferred by a certain form of assignment. It exists. According to the above definition, Which of the following classification is correct.",
             "choices": {
                 "label": [
                     0,

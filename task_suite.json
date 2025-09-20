@@ -201,7 +201,7 @@
 	},
     {
 		"category": "reasoning",
-		"question": "A scientist put several different plants in a sealed container. Every hour, she checked the oxygen in the container to see if it changed. How did the oxygen in the container most likely change?",
+		"instruction": "A scientist put several different plants in a sealed container. Every hour, she checked the oxygen in the container to see if it changed. How did the oxygen in the container most likely change?",
 		"choices": {
 			"text": [
 				"The amount of oxygen increased.",
@@ -220,7 +220,7 @@
 	},
 	{
 		"category": "reasoning",
-		"question": "A student investigates how speed changes as a ball travels down a ramp. Measurements taken by computer every second are recorded on a data table. Which diagram will best display the data from this table?",
+		"instruction": "A student investigates how speed changes as a ball travels down a ramp. Measurements taken by computer every second are recorded on a data table. Which diagram will best display the data from this table?",
 		"choices": {
 			"text": [
 				"a bar graph",
@@ -239,7 +239,7 @@
 	},
 	{
 		"category": "reasoning",
-		"question": "The weather forecast says a heavy snowstorm is coming later today. Which weather observation is likely just before the snow?",
+		"instruction": "The weather forecast says a heavy snowstorm is coming later today. Which weather observation is likely just before the snow?",
 		"choices": {
 			"text": [
 				"clear sky",
@@ -258,7 +258,7 @@
 	},
 	{
 		"category": "reasoning",
-		"question": "Which event occurs on a daily cycle?",
+		"instruction": "Which event occurs on a daily cycle?",
 		"choices": {
 			"text": [
 				"The Sun rises and sets.",
@@ -277,7 +277,7 @@
 	},
 	{
 		"category": "reasoning",
-		"question": "The crust, the mantle, and the core are structures of Earth. Which description is a feature of Earth's mantle?",
+		"instruction": "The crust, the mantle, and the core are structures of Earth. Which description is a feature of Earth's mantle?",
 		"choices": {
 			"text": [
 				"contains fossil remains",
@@ -320,22 +320,27 @@
 		"answer": "Adding real parts and imaginary parts separately, we have $(4-(-4)+0-2)+(-3-1+1-0)i=\\boxed{6-3i}$."
 	},
     {
+		"category": "code",
 		"instruction": "Write a python function to find the number of times a subarray with a given sum appears in the given array.",
 		"output": "Here is the code to solve this problem: \n```python\ndef subarray_count(nums, k):\n    memo = {0: 1}  # When the prefix sum equals k, default value is 1\n    sums = res = 0\n    for num in nums:\n        sums += num\n        if sums - k in memo:\n            res += memo[sums-k]\n        memo[sums] = memo.get(sums, 0) + 1\n    return res\n```"
 	},
 	{
+		"category": "code",
 		"instruction": "Write a function that takes a list of lists as input and returns a list containing the elements at the specified index from each inner list.",
 		"output": "Here is the code to solve this problem: \n```python\ndef extract_elements(list_of_lists, index):\n    result = []\n    for lst in list_of_lists:\n        if len(lst) > index:\n            result.append(lst[index])\n    return result\n```"
 	},
 	{
+		"category": "code",
 		"instruction": "Write a function that takes a string and returns the number of balanced brackets groups. A group of brackets is considered balanced if every opening bracket '(' has a corresponding closing bracket ')'.",
 		"output": "Here is the code to solve this problem: \n```python\ndef countBalancedBrackets(s):\n    stack = []\n    groups = 0\n    for char in s:\n        if char == '(':\n            stack.append(char)\n        elif char == ')' and stack:\n            stack.pop()\n            if not stack:\n                groups += 1\n    return groups\n```"
 	},
 	{
+		"category": "code",
 		"instruction": "Write a function to find the shortest time required to reach from source to all other nodes in a weighted, directed graph using Dijkstra's algorithm. If it is not possible to reach all nodes, return -1.",
 		"output": "Here is the code to solve this problem: \n```python\nfrom collections import defaultdict\nfrom heapq import heappush, heappop\n\ndef network_delay_time(times, N, K):\n    inf = 10 ** 10\n    edges = defaultdict(list)\n    for u, v, w in times:\n        edges[u].append((v, w))\n\n    visited = set()\n    ans = 0\n\n    q = []\n    heappush(q, (0, K))\n    while q:\n        cost, node = heappop(q)\n        if node in visited:\n            continue\n        visited.add(node)\n        ans = max(ans, cost)\n\n        for v, w in edges[node]:\n            if v in visited:\n                continue\n            heappush(q, (cost + w, v))\n\n    return ans if len(visited) == N else -1\n```"
 	},
 	{
+		"category": "code",
 		"instruction": "Write a python function that takes a list of integers as input and returns the length of the longest increasing subsequence (LIS) in the list.",
 		"output": "Here is the code to solve this problem: \n```python\ndef lis_length(nums):\n    if not nums:\n        return 0\n    dp = [1] * len(nums)\n    for i in range(len(nums)):\n        for j in range(i):\n            if nums[i] > nums[j]:\n                dp[i] = max(dp[i], dp[j] + 1)\n    return max(dp)\n```"
 	}
