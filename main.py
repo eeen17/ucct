@@ -13,24 +13,8 @@ import os
 import json
 
 from tqdm import tqdm
+from common.util import attachHooks
 
-
-def attachHooks(model, layers, all_layer_outputs):
-    num_layers = len(layers)
-    
-    def get_layer_output_hook(layer_idx):
-        def hook(module, input, output):
-            hidden_states = output[0]
-            if hidden_states.shape[1] > 1:
-                all_layer_outputs[layer_idx] = hidden_states.detach()
-        return hook
-
-    hook_handles = []
-    for i in range(num_layers):
-        target_layer = layers[i]
-        handle = target_layer.register_forward_hook(get_layer_output_hook(i))
-        hook_handles.append(handle)
-    print(f"Attached {len(hook_handles)} hooks to layers 0 through {num_layers - 1}.")
 
 
 class Task(NamedTuple):
